@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://cuif807vbjriq"]
+
+[ext_resource type="Script" uid="uid://l23l7cpthllp" path="res://scripts/wallcode.gd" id="1_gl57o"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ohbbn"]
+
+[node name="corridor1" type="CSGBox3D" unique_id=963782778]
+size = Vector3(5, 0.1, 10)
+
+[node name="Doors" type="Node3D" parent="." unique_id=1336647828]
+
+[node name="0" type="MeshInstance3D" parent="Doors" unique_id=1089326380]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+mesh = SubResource("BoxMesh_ohbbn")
+
+[node name="1" type="MeshInstance3D" parent="Doors" unique_id=35521231]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+mesh = SubResource("BoxMesh_ohbbn")
+
+[node name="Centre" type="Node3D" parent="." unique_id=873327735]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Centre" unique_id=582718425]
+
+[node name="Walls" type="Node3D" parent="." unique_id=192852390]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Walls" unique_id=1800271296]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.512207, 0)
+size = Vector3(0.1, 5, 10)
+script = ExtResource("1_gl57o")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Walls" unique_id=1047713772]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.5, 0)
+size = Vector3(0.1, 5, 10)
+script = ExtResource("1_gl57o")

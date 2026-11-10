@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://73hl8j78uxe5"]
+
+[node name="SpawnChamber" type="CSGBox3D" unique_id=255829721]
+size = Vector3(100, 0.1, 100)
+
+[node name="Doors" type="Node3D" parent="." unique_id=1334196401]
+
+[node name="0" type="CSGBox3D" parent="Doors" unique_id=859012327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 0)
+
+[node name="Centre" type="Node3D" parent="." unique_id=959195074]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Centre" unique_id=1063698722]

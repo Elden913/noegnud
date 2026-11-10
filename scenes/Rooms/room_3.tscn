@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dx1f60qp3y0vx"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_28m0y"]
+
+[node name="Room3" type="CSGBox3D" unique_id=1181995461]
+size = Vector3(30, 0.1, 30)
+
+[node name="Doors" type="Node3D" parent="." unique_id=2114851096]
+
+[node name="0" type="MeshInstance3D" parent="Doors" unique_id=343279374]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0)
+mesh = SubResource("BoxMesh_28m0y")
+
+[node name="2" type="MeshInstance3D" parent="Doors" unique_id=1877429751]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, -15)
+mesh = SubResource("BoxMesh_28m0y")
+
+[node name="1" type="MeshInstance3D" parent="Doors" unique_id=1816570685]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0)
+mesh = SubResource("BoxMesh_28m0y")
+
+[node name="Centre" type="Node3D" parent="." unique_id=541457423]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Centre" unique_id=1597198276]
