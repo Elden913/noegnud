@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://bs72ogkvdd7d6"]
+
+[ext_resource type="Script" uid="uid://rel828x7sps1" path="res://scripts/player.gd" id="1_ucva2"]
+[ext_resource type="Script" uid="uid://c4s52ps0trl0j" path="res://scripts/spell_resource.gd" id="2_qhqgy"]
+[ext_resource type="Resource" uid="uid://b55nfnbwp3cea" path="res://resources/spells/basic_attack.tres" id="3_qhqgy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2nlrq"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_3vyb7"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iof21"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qhqgy"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D" unique_id=168906038]
+script = ExtResource("1_ucva2")
+spells = Array[ExtResource("2_qhqgy")]([ExtResource("3_qhqgy")])
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1243546611]
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0.9, 0)
+material_override = SubResource("ShaderMaterial_2nlrq")
+cast_shadow = 0
+mesh = SubResource("CapsuleMesh_3vyb7")
+
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=1963282280]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_iof21")
+
+[node name="Head" type="Node3D" parent="." unique_id=1981723989]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=1921416967]
+transform = Transform3D(1, 0, 0, 0, 0.9659259, -0.25881904, 0, 0.25881904, 0.9659259, 0, 0, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="Head" unique_id=709863849]
+transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 0)
+target_position = Vector3(0, 0, -200)
+collision_mask = 5
+
+[node name="FakeHead" type="SpringArm3D" parent="." unique_id=234572633]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+spring_length = 5.0
+
+[node name="StaticCamera" type="Node3D" parent="FakeHead" unique_id=938426601]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=754435816]
+replication_config = SubResource("SceneReplicationConfig_qhqgy")
