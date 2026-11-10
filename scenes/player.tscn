@@ -29,7 +29,6 @@ spells = Array[ExtResource("2_qhqgy")]([ExtResource("3_qhqgy")])
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=1243546611]
 transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0.9, 0)
 material_override = SubResource("ShaderMaterial_2nlrq")
-cast_shadow = 0
 mesh = SubResource("CapsuleMesh_3vyb7")
 
 [node name="Collider" type="CollisionShape3D" parent="." unique_id=1963282280]

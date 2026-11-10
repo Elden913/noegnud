@@ -3,6 +3,7 @@
 [sub_resource type="BoxMesh" id="BoxMesh_28m0y"]
 
 [node name="Room3" type="CSGBox3D" unique_id=1181995461]
+use_collision = true
 size = Vector3(30, 0.1, 30)
 
 [node name="Doors" type="Node3D" parent="." unique_id=2114851096]

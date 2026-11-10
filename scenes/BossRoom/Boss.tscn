@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://73hl8j78uxe5"]
 
 [node name="SpawnChamber" type="CSGBox3D" unique_id=255829721]
+use_collision = true
 size = Vector3(100, 0.1, 100)
 
 [node name="Doors" type="Node3D" parent="." unique_id=1334196401]
