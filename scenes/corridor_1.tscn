@@ -6,6 +6,7 @@
 
 [node name="corridor1" type="CSGBox3D" unique_id=963782778]
 use_collision = true
+collision_layer = 9
 size = Vector3(5, 0.1, 10)
 
 [node name="Doors" type="Node3D" parent="." unique_id=1336647828]
@@ -27,11 +28,13 @@ mesh = SubResource("BoxMesh_ohbbn")
 [node name="CSGBox3D" type="CSGBox3D" parent="Walls" unique_id=1800271296]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.512207, 0)
 use_collision = true
+collision_layer = 9
 size = Vector3(0.1, 5, 10)
 script = ExtResource("1_gl57o")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="Walls" unique_id=1047713772]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.5, 0)
 use_collision = true
+collision_layer = 9
 size = Vector3(0.1, 5, 10)
 script = ExtResource("1_gl57o")

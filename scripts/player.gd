@@ -45,7 +45,9 @@ signal dash_cooldown_progress(current_cooldown: float, max_cooldown: float)
 @export var look_speed: float = 0.002
 ## Maximum range for cone casting / targeting raycasts.
 @export var far_distance: float = 100.0
-
+## Higher values = tighter follow, lower values = looser/smoother follow (e.g. 15.0 - 25.0)
+@export var camera_follow_speed: float = 20.0
+@export var camera_rotation_speed: float = 25.0
 # Node References
 @onready var fake_head: Node3D = $FakeHead
 @onready var static_camera: Node3D = $FakeHead/StaticCamera
@@ -82,6 +84,7 @@ func _ready() -> void:
 	spell_uncast_timer.wait_time = 1.0
 	spell_uncast_timer.timeout.connect(spell_uncast)
 	add_child(spell_uncast_timer)
+	head.reparent.call_deferred(get_tree().current_scene)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -126,8 +129,15 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	# Smooth camera follow
-	head.global_position = head.global_position.lerp(static_camera.global_position, 0.2)
-	head.global_basis = static_camera.global_basis
+	var pos_weight:float = 1.0 - exp(-camera_follow_speed*delta)
+	var rot_weight:float = 1.0 - exp(-camera_rotation_speed*delta)
+	head.global_position = head.global_position.lerp(static_camera.global_position, pos_weight)
+	
+	var current_quat: Quaternion = head.global_transform.basis.get_rotation_quaternion()
+	var target_quat: Quaternion = static_camera.global_transform.basis.get_rotation_quaternion()
+	var smooth_quat: Quaternion = current_quat.slerp(target_quat, rot_weight)
+
+	head.global_transform.basis = Basis(smooth_quat)
 
 	# Freefly branch
 	if can_freefly and freeflying:
