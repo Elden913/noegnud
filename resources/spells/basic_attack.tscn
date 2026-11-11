@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://ddykyy3lqbxks"]
+
+[ext_resource type="Script" uid="uid://1w6ktgep82ia" path="res://resources/spells/basic_attack.gd" id="1_1hi5y"]
+
+[sub_resource type="Curve" id="Curve_1hi5y"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_1hi5y"]
+offsets = PackedFloat32Array(0.33763838, 1)
+colors = PackedColorArray(0.8265091, 3.7301331e-06, 6.738305e-07, 1, 0.12424179, 0.28938743, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8htsq"]
+resource_local_to_scene = true
+vertex_color_use_as_albedo = true
+
+[node name="BasicAttack" type="Node3D" unique_id=2091541309]
+script = ExtResource("1_1hi5y")
+size_curve = SubResource("Curve_1hi5y")
+color_gradient = SubResource("Gradient_1hi5y")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=498302842]
+material = SubResource("StandardMaterial3D_8htsq")

@@ -73,17 +73,17 @@ var spawn_position: Vector3 = Vector3.ZERO
 
 var current_spell: SpellResource = null
 var spell_inputs: PackedByteArray = []
-var spell_uncast_timer: Timer = Timer.new()
+var cur_idx: int = 0
+var correct_inputs: Array[KeyState] = []
+var spell_scene: Node
+var spell_ready: bool = false
+enum KeyState { Correct, Incorrect, None }
 
 
 func _ready() -> void:
 	#global_position = spawn_position
 	look_rotation.y = rotation.y
 	look_rotation.x = fake_head.rotation.x
-	spell_uncast_timer.one_shot = true
-	spell_uncast_timer.wait_time = 1.0
-	spell_uncast_timer.timeout.connect(spell_uncast)
-	add_child(spell_uncast_timer)
 	head.reparent.call_deferred(get_tree().current_scene)
 
 
@@ -94,23 +94,27 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif Input.is_key_pressed(KEY_ESCAPE):
 		release_mouse()
 	if Input.is_key_pressed(KEY_1):
-		cast_spell(0)
+		start_spell(0)
 	if Input.is_key_pressed(KEY_2):
-		cast_spell(1)
+		start_spell(1)
 	if current_spell and event is InputEventKey and event.is_pressed() and not event.is_echo():
 		var ch = event.as_text().to_lower()
 		match ch:
 			"w", "a", "s", "d":
 				pass
 			var c when len(c) == 1 and c >= 'a' and c <= 'z':
-				spell_inputs.append(ord(ch))
-				SignalBus.spell_input.emit(ord(ch))
-				if current_spell.inputs == spell_inputs:
-					var spell_scene := current_spell.scene.instantiate()
-					get_tree().current_scene.add_child(spell_scene)
-					spell_scene.global_transform = global_transform
-					spell_inputs.clear()
-				spell_uncast_timer.start()
+				var ln = len(current_spell.inputs)
+				if cur_idx < ln:
+					spell_inputs[cur_idx] = ord(ch)
+					if spell_inputs[cur_idx] == current_spell.inputs[cur_idx]:
+						correct_inputs[cur_idx] = KeyState.Correct
+						cur_idx += 1
+						SignalBus.spell_input.emit(ord(ch))
+						spell_scene.set_progress(float(cur_idx) / float(ln))
+						spell_ready = true
+					else:
+						correct_inputs[cur_idx] = KeyState.Incorrect
+						spell_uncast()
 				
 
 	
@@ -151,10 +155,14 @@ func _physics_process(delta: float) -> void:
 	_dash_cooldown(delta)
 	_dash_input()
 	_horizontal_movement(delta)
+	_spell_casting()
 
 	velocity = vel
 	move_and_slide()
 
+func _spell_casting():
+	if Input.is_action_just_pressed("player_cast") and spell_ready:
+		cast_spell()
 
 # --- MOVEMENT HELPERS ---
 
@@ -265,15 +273,34 @@ func release_mouse() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	mouse_captured = false
 
-func cast_spell(index: int):
+func start_spell(index: int):
 	current_spell = spells[index]
-	spell_inputs.clear()
-	spell_uncast_timer.start()
+	spell_inputs.resize(len(current_spell.inputs))
+	spell_inputs.fill(0)
+	correct_inputs.resize(len(current_spell.inputs))
+	correct_inputs.fill(KeyState.None)
+	if spell_scene:
+		spell_scene.uncast_please()
+	spell_scene = current_spell.scene.instantiate()
+	add_child(spell_scene)
+	spell_scene.global_transform = global_transform
+	
+	cur_idx = 0
 	SignalBus.spell_cast_inputs.emit(current_spell.inputs)
+
+func cast_spell():
+	spell_scene.cast_please()
+	spell_scene.reparent(get_tree().current_scene)
+	spell_ready = false
+	current_spell = null
+	spell_scene = null
+
 
 func spell_uncast():
 	print("UNCASTING")
-	spell_uncast_timer.stop()
+	spell_ready = false
 	current_spell = null
+	spell_scene.uncast_please()
+	spell_scene = null
 	spell_inputs.clear()
 	SignalBus.spell_uncast.emit()
