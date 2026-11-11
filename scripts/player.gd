@@ -77,7 +77,7 @@ var spell_uncast_timer: Timer = Timer.new()
 
 
 func _ready() -> void:
-	global_position = spawn_position
+	#global_position = spawn_position
 	look_rotation.y = rotation.y
 	look_rotation.x = fake_head.rotation.x
 	spell_uncast_timer.one_shot = true

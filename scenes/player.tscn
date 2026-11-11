@@ -23,6 +23,7 @@ properties/1/spawn = true
 properties/1/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" unique_id=168906038]
+collision_layer = 3
 script = ExtResource("1_ucva2")
 spells = Array[ExtResource("2_qhqgy")]([ExtResource("3_qhqgy")])
 camera_follow_speed = 15.0
