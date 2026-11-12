@@ -12,8 +12,11 @@ signal dash_cooldown_progress(current_cooldown: float, max_cooldown: float)
 
 @export_group("combat")
 @export var health:float = 100.0
+var current_health:float
 @export var mana:float = 100.0
+var current_mana:float
 @export var stamina:float = 100.0
+var current_stamina:float
 
 @export_group("Movement")
 ## Can we move around?
@@ -90,6 +93,9 @@ func _ready() -> void:
 	look_rotation.y = rotation.y
 	look_rotation.x = fake_head.rotation.x
 	head.reparent.call_deferred(get_tree().current_scene)
+	current_health = health
+	current_mana = mana
+	current_stamina = stamina
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -295,6 +301,7 @@ func start_spell(index: int):
 	SignalBus.spell_cast_inputs.emit(current_spell.inputs)
 
 func cast_spell():
+	take_damage(1)
 	spell_scene.cast_please()
 	spell_scene.reparent(get_tree().current_scene)
 	spell_ready = false
@@ -310,3 +317,7 @@ func spell_uncast():
 	spell_scene = null
 	spell_inputs.clear()
 	SignalBus.spell_uncast.emit()
+
+func take_damage(amt:float):
+	print("player hit ", amt)
+	current_health = clampf(current_health-amt, 0, 100)

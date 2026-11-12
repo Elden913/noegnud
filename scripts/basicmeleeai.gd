@@ -21,6 +21,8 @@ var targets:Array = []
 var target:Node3D
 var timer:float = 0.0
 var shield_broken:bool = false
+var is_alive = true
+var player_in_front:Array = []
 
 func _ready() -> void:
 	current_shield_val = shield_val
@@ -31,25 +33,25 @@ func _ready() -> void:
 	pass
 	
 func _physics_process(delta: float) -> void:
-	if has_target:
-		if global_position.distance_squared_to(target.global_position) <= 400:
-			attack_sequence(target, delta)
-		nav.target_position =  targets[0].global_position
-		var next_path_pos := nav.get_next_path_position()
-		var dir := global_position.direction_to(next_path_pos)
-		velocity = SPEED * dir
-		
-		if nav.is_navigation_finished():
-			if targets.is_empty():
-				has_target = false
-				bars.transparency = 1
-				velocity = Vector3.ZERO
+	if is_alive:
+		if has_target:
+			if global_position.distance_squared_to(target.global_position) <= 400:
+				attack_sequence(target, delta)
+			nav.target_position =  targets[0].global_position
+			var next_path_pos := nav.get_next_path_position()
+			var dir := global_position.direction_to(next_path_pos)
+			velocity = SPEED * dir
 			
-		var rotation_speed:float = 4.0
-		var target_rotation := dir.signed_angle_to(Vector3.MODEL_FRONT, Vector3.DOWN)
-		rotation.y = rotate_toward(rotation.y, target_rotation, delta * rotation_speed)
-	move_and_slide()
-	pass
+			if nav.is_navigation_finished():
+				if targets.is_empty():
+					has_target = false
+					bars.transparency = 1
+					velocity = Vector3.ZERO
+				
+			var rotation_speed:float = 4.0
+			var target_rotation := dir.signed_angle_to(Vector3.MODEL_FRONT, Vector3.DOWN)
+			rotation.y = rotate_toward(rotation.y, target_rotation, delta * rotation_speed)
+		move_and_slide()
 
 func attack_sequence(target:Node3D, delta:float)->void:
 	if timer <= 0:
@@ -57,10 +59,18 @@ func attack_sequence(target:Node3D, delta:float)->void:
 		if attacks.is_empty():
 			print("tried attacking, no attacks found")
 		else:
-			var attack = attacks.pick_random().instantiate()
-			targets.push_back(targets.pop_front())
-			target = targets[0]
-		timer = randf_range(cooldown_min, cooldown_max)
+			if player_in_front.has(target):
+				print("attacked player")
+				var attack = attacks.pick_random().instantiate()
+				add_child(attack)
+				attack.global_position = global_position
+				targets.push_back(targets.pop_front())
+				target = targets[0]
+				timer = randf_range(cooldown_min, cooldown_max)
+			else: 
+				print("selecting new target")
+				targets.push_back(targets.pop_front())
+				target = targets[0]
 	else: timer -= delta
 	pass
 
@@ -78,6 +88,9 @@ func take_damage(amt:float)->void:
 		current_health = clampf(current_health - (amt*0.75), 0, 100)
 	else:
 		current_health = clampf(current_health - (amt*2), 0, 100)
+	if current_health == 0:
+		is_alive = false
+		bars.transparency = 1
 	update_bars()
 	pass
 	
@@ -98,7 +111,7 @@ func broken_shield()->void:
 	current_shield_val = shield_val
 	var bar_tween = create_tween()
 	bar_tween.set_trans(Tween.TRANS_LINEAR)
-	bar_tween.tween_property(shield_bar, "value", 0, broken_shield_timer.wait_time-0.01)
+	bar_tween.tween_property(shield_bar, "value", 0, broken_shield_timer.wait_time-0.001)
 
 func update_bars()->void:
 	shield_bar.value = (current_shield_val/shield_val) * 100
@@ -111,4 +124,9 @@ func _on_broken_shield_timer_timeout() -> void:
 	current_shield_val = shield_val
 	update_bars()
 	shield_bar.modulate = Color.WHITE
-	
+
+func _on_front_detection_body_entered(body: Node3D) -> void:
+	player_in_front.append(body)
+
+func _on_front_detection_body_exited(body: Node3D) -> void:
+	player_in_front.erase(body)

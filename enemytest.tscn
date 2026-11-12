@@ -50,7 +50,6 @@ size = Vector3(14.6953125, 10, 35.049805)
 
 [node name="melee_enemy_test1" parent="." unique_id=798760047 instance=ExtResource("1_3a0kg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6595879, 0)
-SPEED = 2.5
 
 [node name="Player" parent="." unique_id=168906038 instance=ExtResource("2_4i8o7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.3677006, -48.10457)
