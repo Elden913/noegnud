@@ -42,7 +42,7 @@ material = SubResource("StandardMaterial3D_fwe26")
 size = Vector3(0.5, 0.5, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fwe26"]
-size = Vector3(20, 5, 20)
+size = Vector3(10, 5, 20)
 
 [node name="basicmeleeai" type="CharacterBody3D" unique_id=798760047]
 collision_layer = 5
@@ -113,7 +113,7 @@ mesh = SubResource("BoxMesh_ohbbn")
 [node name="FrontDetection" type="Area3D" parent="." unique_id=816411016]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FrontDetection" unique_id=72054793]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.844298)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.5)
 shape = SubResource("BoxShape3D_fwe26")
 
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_area_3d_body_entered"]
