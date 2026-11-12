@@ -10,6 +10,11 @@ signal dash_cooldown_progress(current_cooldown: float, max_cooldown: float)
 
 @export var spells: Array[SpellResource] = []
 
+@export_group("combat")
+@export var health:float = 100.0
+@export var mana:float = 100.0
+@export var stamina:float = 100.0
+
 @export_group("Movement")
 ## Can we move around?
 @export var can_move: bool = true
@@ -32,7 +37,7 @@ signal dash_cooldown_progress(current_cooldown: float, max_cooldown: float)
 ## How long the dash phase lasts in seconds.
 @export var dash_duration: float = 0.2
 ## Cooldown in seconds before another dash can be executed.
-@export var dash_cooldown: float = 2.0
+@export var dash_cooldown: float = 1.0
 
 @export_group("Freefly Mode")
 ## Can we press to enter freefly mode (noclip)?
@@ -177,6 +182,7 @@ func _dash_cooldown(delta: float) -> void:
 		dash_cooldown_progress.emit(maxf(0.0, dash_cooldown_timer), dash_cooldown)
 
 	if is_dashing:
+		
 		dash_timer -= delta
 		if dash_timer <= 0.0:
 			is_dashing = false

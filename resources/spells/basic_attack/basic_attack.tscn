@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ddykyy3lqbxks"]
 
-[ext_resource type="Script" uid="uid://1w6ktgep82ia" path="res://resources/spells/basic_attack.gd" id="1_1hi5y"]
+[ext_resource type="Script" uid="uid://1w6ktgep82ia" path="res://resources/spells/basic_attack/basic_attack.gd" id="1_1hi5y"]
 
 [sub_resource type="Curve" id="Curve_1hi5y"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]

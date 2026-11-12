@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://c073dbwuf61fb"]
+
+[ext_resource type="PackedScene" uid="uid://v3uoi5xv4jhe" path="res://melee_enemy_test_1.tscn" id="1_3a0kg"]
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://scenes/player.tscn" id="2_4i8o7"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3a0kg"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_4i8o7"]
+sky_material = SubResource("ProceduralSkyMaterial_3a0kg")
+
+[sub_resource type="Environment" id="Environment_m88j1"]
+background_mode = 2
+sky = SubResource("Sky_4i8o7")
+glow_enabled = true
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_fwe26"]
+vertices = PackedVector3Array(23.153519, 0.45, -25.25, 27.653519, 0.45, -26.25, 27.653519, 0.45, -49.5, 22.903519, 0.45, -24, -49.59648, 0.45, -49.5, -49.59648, 0.45, 15.75, -33.59648, 0.45, 11.25, 30.153519, 0.45, -11.5, 30.903519, 0.45, -11, 28.903519, 0.45, -26, 29.153519, 0.45, -23.75, 49.40352, 0.45, -24, 49.40352, 0.45, -49.5, 30.903519, 9.95, -26.5, 29.653519, 10.45, -26.75, 18.153519, 15.2, -24.25, 26.653519, 19.2, 8.75, 39.15352, 13.95, 6.25, 30.153519, 0.45, -19, 49.40352, 0.45, -19.25, 31.153519, 0.45, -14, 49.40352, 0.45, -14.25, 31.653519, 0.45, -11.25, 31.153519, 0.45, -11, 49.40352, 0.45, -10.75, 31.653519, 0.45, -12.75, -26.596481, 0.45, 34.75, -44.09648, 0.45, 49.5, 49.40352, 0.45, 49.5, -43.84648, 0.45, 39.75, -32.59648, 0.45, 12.75, -43.34648, 27.95, 38.5, -27.846481, 27.95, 34.25, -33.84648, 27.95, 12.5, -49.59648, 27.95, 16.75, -49.59648, 0.45, 49.5, -44.84648, 0.45, 38, -49.59648, 0.45, 21.5)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(0, 3, 2), PackedInt32Array(2, 3, 6), PackedInt32Array(2, 6, 5), PackedInt32Array(2, 5, 4), PackedInt32Array(3, 7, 6), PackedInt32Array(6, 7, 8), PackedInt32Array(9, 11, 10), PackedInt32Array(9, 1, 11), PackedInt32Array(11, 1, 2), PackedInt32Array(11, 2, 12), PackedInt32Array(14, 13, 15), PackedInt32Array(15, 13, 16), PackedInt32Array(16, 13, 17), PackedInt32Array(19, 18, 11), PackedInt32Array(11, 18, 10), PackedInt32Array(21, 20, 19), PackedInt32Array(19, 20, 18), PackedInt32Array(24, 23, 22), PackedInt32Array(25, 20, 21), PackedInt32Array(22, 25, 24), PackedInt32Array(24, 25, 21), PackedInt32Array(23, 24, 8), PackedInt32Array(8, 24, 28), PackedInt32Array(8, 28, 26), PackedInt32Array(26, 28, 27), PackedInt32Array(27, 29, 26), PackedInt32Array(26, 30, 8), PackedInt32Array(30, 6, 8), PackedInt32Array(32, 31, 33), PackedInt32Array(33, 31, 34), PackedInt32Array(29, 27, 36), PackedInt32Array(36, 27, 35), PackedInt32Array(35, 37, 36)]
+
+[node name="enemytest" type="Node3D" unique_id=137018909]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1625030798]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1018497440]
+environment = SubResource("Environment_m88j1")
+
+[node name="Node3D" type="Node3D" parent="." unique_id=2118277875]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1229446419]
+navigation_mesh = SubResource("NavigationMesh_fwe26")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1850997757]
+use_collision = true
+size = Vector3(100, 0.1, 100)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D/CSGBox3D" unique_id=1013772188]
+transform = Transform3D(0.9612756, 0, 0.27558887, 0, 1, 0, -0.27558887, 0, 0.9612756, -38.678703, 14.067036, 25.50452)
+size = Vector3(17.066528, 26.897339, 23.331543)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="NavigationRegion3D/CSGBox3D" unique_id=24794519]
+transform = Transform3D(0.9048285, 0.3466756, 0.24718706, -0.38308224, 0.9162412, 0.1172607, -0.18583155, -0.20079382, 0.9618464, 26.944296, 9.492801, -8.083007)
+size = Vector3(14.6953125, 10, 35.049805)
+
+[node name="melee_enemy_test1" parent="." unique_id=798760047 instance=ExtResource("1_3a0kg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6595879, 0)
+SPEED = 2.5
+
+[node name="Player" parent="." unique_id=168906038 instance=ExtResource("2_4i8o7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.3677006, -48.10457)

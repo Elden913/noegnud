@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://rel828x7sps1" path="res://scripts/player.gd" id="1_ucva2"]
 [ext_resource type="Script" uid="uid://c4s52ps0trl0j" path="res://scripts/spell_resource.gd" id="2_qhqgy"]
-[ext_resource type="Resource" uid="uid://b55nfnbwp3cea" path="res://resources/spells/basic_attack.tres" id="3_qhqgy"]
+[ext_resource type="Resource" uid="uid://b55nfnbwp3cea" path="res://resources/spells/basic_attack/basic_attack.tres" id="3_qhqgy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2nlrq"]
 

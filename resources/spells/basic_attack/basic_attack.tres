@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpellResource" format=3 uid="uid://b55nfnbwp3cea"]
 
-[ext_resource type="PackedScene" uid="uid://ddykyy3lqbxks" path="res://resources/spells/basic_attack.tscn" id="1_hx0se"]
+[ext_resource type="PackedScene" uid="uid://ddykyy3lqbxks" path="res://resources/spells/basic_attack/basic_attack.tscn" id="1_hx0se"]
 [ext_resource type="Script" uid="uid://c4s52ps0trl0j" path="res://scripts/spell_resource.gd" id="2_78l0r"]
 
 [resource]
