@@ -1,11 +1,14 @@
 [gd_scene format=3 uid="uid://dx1f60qp3y0vx"]
 
+[ext_resource type="Script" uid="uid://boho6qdh7w2r" path="res://scenes/Rooms/roomscript.gd" id="1_rtcsv"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_28m0y"]
 
 [node name="Room3" type="CSGBox3D" unique_id=1181995461]
 use_collision = true
 collision_layer = 9
 size = Vector3(30, 0.1, 30)
+script = ExtResource("1_rtcsv")
 
 [node name="Doors" type="Node3D" parent="." unique_id=2114851096]
 

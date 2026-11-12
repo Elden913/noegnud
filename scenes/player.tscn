@@ -26,7 +26,25 @@ properties/1/replication_mode = 1
 collision_layer = 3
 script = ExtResource("1_ucva2")
 spells = Array[ExtResource("2_qhqgy")]([ExtResource("3_qhqgy")])
+health = null
+mana = null
+stamina = null
+can_move = null
+base_speed = null
+can_sprint = null
+sprint_speed = null
+has_gravity = null
+can_jump = null
+jump_velocity = null
+dash_speed = null
+dash_duration = null
+dash_cooldown = null
+can_freefly = null
+freefly_speed = null
+look_speed = null
+far_distance = null
 camera_follow_speed = 15.0
+camera_rotation_speed = null
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=1243546611]
 transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, 0, 0.9, 0)

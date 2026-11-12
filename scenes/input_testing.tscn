@@ -49,6 +49,9 @@ offset_right = 40.0
 grow_vertical = 0
 script = ExtResource("2_udcqu")
 
-[node name="Test" parent="." unique_id=274815798 instance=ExtResource("3_yyq1d")]
+[node name="DungeonGeneration" parent="." unique_id=274815798 instance=ExtResource("3_yyq1d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.005, 0)
-RoomCount = 5
+total_room_loot_val = 30
+max_room_loot_val = 7
+total_room_difficulty_value = 50
+max_room_difficulty_value = 10

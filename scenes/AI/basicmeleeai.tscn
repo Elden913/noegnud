@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://v3uoi5xv4jhe"]
 
-[ext_resource type="Script" uid="uid://dcortfipcy1yr" path="res://melee_enemy_test_1.gd" id="1_mn3no"]
+[ext_resource type="Script" uid="uid://dcortfipcy1yr" path="res://scripts/basicmeleeai.gd" id="1_0p5vc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_28m0y"]
 
@@ -9,11 +9,13 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_28m0y"]
 radius = 10.0
 
-[node name="melee_enemy_test1" type="CharacterBody3D" unique_id=798760047]
-script = ExtResource("1_mn3no")
+[node name="basicmeleeai" type="CharacterBody3D" unique_id=798760047]
+script = ExtResource("1_0p5vc")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=475825548]
 avoidance_enabled = true
+debug_enabled = true
+debug_path_custom_color = Color(0, 1, 1, 1)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=194165101]
 shape = SubResource("BoxShape3D_28m0y")

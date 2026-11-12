@@ -2,6 +2,7 @@ extends Node3D
 ## thanks to claude i can rest early
 @export var data: Dungeon1Data
 ## Total number of rooms in the dungeon (spawn room and boss chamber included, minimum 2).
+@export_group("Dungeon Generation")
 @export var RoomCount: int = 5
 ## Hall length range (even values are tried). Widen this if rooms fail to fit.
 @export var corridor_length_min: int = 20
@@ -15,6 +16,13 @@ extends Node3D
 ## If leftover doors remain (fallback only), free those Door nodes. Only useful if the Door node holds the doorway cutout/mesh.
 @export var remove_unused_doors: bool = false
 
+@export_group("Loot & AI")
+@export var total_room_loot_val: int = 100
+@export var boss_loot_val: int = 50
+@export var max_room_loot_val: int = 15
+@export var total_room_difficulty_value: int = 100
+@export var max_room_difficulty_value: int = 15
+
 var target_rooms: int = 0
 var strict_doors: bool = true   # true = every door must end up used
 var rooms_placed: int = 0
@@ -23,6 +31,10 @@ var open_doors: Array[Dictionary] = []  # {door: Node3D, room: Node3D, depth: in
 var used_doors: Dictionary = {}         # door -> true (something is attached)
 var placed_bounds: Dictionary = {}      # piece -> AABB (world space, shrunk)
 var warned_scenes: Dictionary = {}
+
+# Room tracking for loot & hostility distribution
+var content_rooms: Array[Node3D] = []   # regular rooms + dead ends (excludes spawn & boss)
+var boss_room: Node3D = null
 
 # Door-count planning
 var door_counts: Dictionary = {}        # PackedScene -> door count
@@ -81,8 +93,8 @@ func finish_generation(requested_target: int) -> void:
 		push_warning("Only %d of %d rooms fit, but the boss chamber was placed." % [target_rooms, requested_target])
 
 	spawn_dead_ends()
+	assign_room_values()
 
-## Scans for any open door without a connection and caps it with a random DeadEnd scene
 ## Scans for any open door without a connection and caps it with a random DeadEnd scene
 func spawn_dead_ends() -> void:
 	if not data or data.DeadEnd.is_empty():
@@ -116,6 +128,8 @@ func spawn_dead_ends() -> void:
 			discard_piece(dead_end)
 			if remove_unused_doors:
 				door.queue_free()
+		else:
+			content_rooms.append(dead_end)
 
 func build_dungeon() -> bool:
 	clear_dungeon()
@@ -143,8 +157,108 @@ func clear_dungeon() -> void:
 	placed_bounds.clear()
 	used_doors.clear()
 	open_doors.clear()
+	content_rooms.clear()
+	boss_room = null
 	rooms_placed = 0
 	boss_spawned = false
+
+# ---------- Loot & Hostility Distribution ----------
+
+func assign_room_values() -> void:
+	if is_instance_valid(boss_room):
+		_apply_room_stat(boss_room, "loot", boss_loot_val)
+
+	var count := content_rooms.size()
+	if count == 0:
+		return
+
+	var loot_values := distribute_budget(count, total_room_loot_val, max_room_loot_val, "loot")
+	var difficulty_values := distribute_budget(count, total_room_difficulty_value, max_room_difficulty_value, "hostility")
+
+	for i in count:
+		var room := content_rooms[i]
+		_apply_room_stat(room, "loot", loot_values[i])
+		_apply_room_stat(room, "difficulty", difficulty_values[i])
+
+func _apply_room_stat(room: Node3D, stat_name: String, value: int) -> void:
+	if stat_name in room:
+		room.set(stat_name, value)
+	room.set_meta(stat_name, value)
+
+## Splits `total` into integer shares across `count` rooms with sharp high/low variance.
+func distribute_budget(count: int, total: int, max_per_room: int, label: String) -> PackedInt32Array:
+	var values := PackedInt32Array()
+	values.resize(count)
+	values.fill(0)
+
+	if count <= 0 or total <= 0:
+		return values
+
+	var effective_max := max_per_room
+	if effective_max <= 0 or count * effective_max <= total:
+		effective_max = ceili((float(total) / float(count)) * 2.5)
+		push_warning("Room count (%d) * max %s (%d) is too tight for total (%d). Raising effective cap to %d." % [count, label, max_per_room, total, effective_max])
+
+	# Skewed weights create dramatic spikes instead of clustering around the average
+	var weights := PackedFloat32Array()
+	weights.resize(count)
+	var weight_sum := 0.0
+	for i in count:
+		var w := pow(randf(), 2.5) + 0.03
+		weights[i] = w
+		weight_sum += w
+
+	var raw := PackedFloat32Array()
+	raw.resize(count)
+	for i in count:
+		raw[i] = float(total) * (weights[i] / weight_sum)
+
+	# Cap anything over effective_max and dump overflow into random uncapped rooms
+	for _iter in count * 2:
+		var overflow := 0.0
+		var uncapped: Array[int] = []
+		for i in count:
+			if raw[i] > float(effective_max):
+				overflow += raw[i] - float(effective_max)
+				raw[i] = float(effective_max)
+			elif raw[i] < float(effective_max) - 0.001:
+				uncapped.append(i)
+
+		if overflow <= 0.0001 or uncapped.is_empty():
+			break
+
+		var idx: int = uncapped.pick_random()
+		var room_space := float(effective_max) - raw[idx]
+		raw[idx] += minf(overflow, room_space)
+
+	# Convert to whole integers and distribute any leftover remainder cleanly
+	var current_sum := 0
+	for i in count:
+		values[i] = mini(int(floor(raw[i])), effective_max)
+		current_sum += values[i]
+
+	var remainder := total - current_sum
+	while remainder > 0:
+		var candidates: Array[int] = []
+		for i in count:
+			if values[i] < effective_max:
+				candidates.append(i)
+		if candidates.is_empty():
+			break
+		values[candidates.pick_random()] += 1
+		remainder -= 1
+
+	while remainder < 0:
+		var candidates: Array[int] = []
+		for i in count:
+			if values[i] > 0:
+				candidates.append(i)
+		if candidates.is_empty():
+			break
+		values[candidates.pick_random()] -= 1
+		remainder += 1
+
+	return values
 
 # ---------- Door-count planning ----------
 
@@ -216,6 +330,9 @@ func extend_dungeon(is_boss: bool) -> bool:
 			rooms_placed += 1
 			if is_boss:
 				boss_spawned = true
+				boss_room = new_room
+			else:
+				content_rooms.append(new_room)
 			add_open_doors(new_room, entry["depth"] + 1)
 			return true
 

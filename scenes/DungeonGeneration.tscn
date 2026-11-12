@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://dcj7jdswaw5ob"]
 
 [ext_resource type="Script" uid="uid://tc7wybftlmp8" path="res://scripts/testgeneration.gd" id="1_qdj1e"]
-[ext_resource type="PackedScene" uid="uid://73hl8j78uxe5" path="res://scenes/BossRoom/Boss.tscn" id="2_ulyvk"]
-[ext_resource type="PackedScene" uid="uid://cuif807vbjriq" path="res://scenes/corridor_1.tscn" id="3_f2acl"]
-[ext_resource type="PackedScene" uid="uid://bp85tv2hnd1fn" path="res://scenes/DeadEnd/DeadEnd.tscn" id="4_llh1o"]
+[ext_resource type="PackedScene" uid="uid://73hl8j78uxe5" path="res://scenes/Rooms/BossRoom/Boss.tscn" id="2_ulyvk"]
+[ext_resource type="PackedScene" uid="uid://cuif807vbjriq" path="res://scenes/Rooms/corridor_1.tscn" id="3_f2acl"]
+[ext_resource type="PackedScene" uid="uid://bp85tv2hnd1fn" path="res://scenes/Rooms/DeadEnd/DeadEnd.tscn" id="4_llh1o"]
 [ext_resource type="PackedScene" uid="uid://lobj1djvdwht" path="res://scenes/Rooms/room_1.tscn" id="5_1r444"]
 [ext_resource type="PackedScene" uid="uid://f1w3l7fjgstp" path="res://scenes/Rooms/room_2.tscn" id="6_ns726"]
 [ext_resource type="PackedScene" uid="uid://dx1f60qp3y0vx" path="res://scenes/Rooms/room_3.tscn" id="7_ans18"]
-[ext_resource type="PackedScene" uid="uid://c3to43rj1j2bw" path="res://scenes/Spawn.tscn" id="8_2rt3e"]
+[ext_resource type="PackedScene" uid="uid://c3to43rj1j2bw" path="res://scenes/Rooms/Spawn.tscn" id="8_2rt3e"]
 [ext_resource type="Script" uid="uid://btd4n6sajlims" path="res://scripts/Dungeon1Res.gd" id="9_44ymj"]
 
 [sub_resource type="Resource" id="Resource_qdj1e"]
@@ -26,10 +26,9 @@ background_mode = 2
 sky = SubResource("Sky_k3bwl")
 glow_enabled = true
 
-[node name="Test" type="Node3D" unique_id=274815798]
+[node name="DungeonGeneration" type="Node3D" unique_id=274815798]
 script = ExtResource("1_qdj1e")
 data = SubResource("Resource_qdj1e")
-RoomCount = 15
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1415666337]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
