@@ -25,3 +25,10 @@ func cast_please():
 
 func uncast_please():
 	queue_free()
+
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	print("damaged")
+	body.take_damage(10)
+	body.damage_shield(10)
+	pass # Replace with function body.

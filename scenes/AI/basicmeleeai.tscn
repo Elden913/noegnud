@@ -9,7 +9,33 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_28m0y"]
 radius = 10.0
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_ohbbn"]
+viewport_path = NodePath("Bars/SubViewport")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_s2gpv"]
+light_mode = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_elmjn"]
+bg_color = Color(0, 0, 0, 0.19607843)
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2gpv"]
+bg_color = Color(0.93161386, 0.40634307, 0.44073728, 1)
+
+[sub_resource type="Theme" id="Theme_28m0y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ohbbn"]
+bg_color = Color(0, 0, 0, 0.15686275)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fwe26"]
+bg_color = Color(1, 1, 1, 1)
+
 [node name="basicmeleeai" type="CharacterBody3D" unique_id=798760047]
+collision_layer = 5
 script = ExtResource("1_0p5vc")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=475825548]
@@ -17,16 +43,56 @@ avoidance_enabled = true
 debug_enabled = true
 debug_path_custom_color = Color(0, 1, 1, 1)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=194165101]
+[node name="HitBox" type="CollisionShape3D" parent="." unique_id=194165101]
 shape = SubResource("BoxShape3D_28m0y")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=550464967]
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=550464967]
 mesh = SubResource("BoxMesh_28m0y")
 
-[node name="Area3D" type="Area3D" parent="." unique_id=1410973564]
+[node name="DetectionZone" type="Area3D" parent="." unique_id=1410973564]
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=829716784]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionZone" unique_id=829716784]
 shape = SubResource("SphereShape3D_28m0y")
 
-[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[node name="Bars" type="Sprite3D" parent="." unique_id=438980392]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8114545, 0)
+cast_shadow = 0
+pixel_size = 0.004
+billboard = 1
+texture = SubResource("ViewportTexture_ohbbn")
+
+[node name="SubViewport" type="SubViewport" parent="Bars" unique_id=571085038]
+transparent_bg = true
+size = Vector2i(309, 40)
+size_2d_override_stretch = true
+
+[node name="HPBar" type="ProgressBar" parent="Bars/SubViewport" unique_id=1001953208]
+material = SubResource("CanvasItemMaterial_s2gpv")
+offset_left = -1.0
+offset_right = 299.0
+offset_bottom = 20.0
+theme_override_styles/background = SubResource("StyleBoxFlat_elmjn")
+theme_override_styles/fill = SubResource("StyleBoxFlat_s2gpv")
+value = 50.0
+show_percentage = false
+
+[node name="ShieldBar" type="ProgressBar" parent="Bars/SubViewport" unique_id=1481932261]
+material = SubResource("CanvasItemMaterial_s2gpv")
+offset_top = 26.0
+offset_right = 300.0
+offset_bottom = 33.0
+theme = SubResource("Theme_28m0y")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_ohbbn")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fwe26")
+value = 50.0
+show_percentage = false
+
+[node name="Misc" type="Node" parent="." unique_id=268665681]
+
+[node name="BrokenShieldTimer" type="Timer" parent="Misc" unique_id=191279435]
+one_shot = true
+
+[connection signal="body_entered" from="DetectionZone" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="Misc/BrokenShieldTimer" to="." method="_on_broken_shield_timer_timeout"]
