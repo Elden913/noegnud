@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://bjy1w6tf6rw0s"]
+
+[ext_resource type="Script" uid="uid://cuo6j365a3j4i" path="res://enemyattack.gd" id="1_wg6he"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_28m0y"]
+size = Vector3(10, 1, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwe26"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.22352941)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ohbbn"]
+material = SubResource("StandardMaterial3D_fwe26")
+size = Vector3(10, 1, 10)
+
+[node name="aiatk1" type="CSGBox3D" unique_id=1031454439]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
+script = ExtResource("1_wg6he")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1007130730]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=783357025]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+shape = SubResource("BoxShape3D_28m0y")
+debug_color = Color(0.99744016, 0, 0.17579108, 0.41960785)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D" unique_id=130840256]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+mesh = SubResource("BoxMesh_ohbbn")
+
+[node name="Timer" type="Timer" parent="." unique_id=669917516]
+one_shot = true
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
