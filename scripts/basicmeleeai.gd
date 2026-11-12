@@ -9,7 +9,6 @@ var current_shield_val:float
 @export var cooldown_min:float = 3.0
 @export var cooldown_max:float = 6.0
 @export var attacks:Array[PackedScene] = []
-
 @onready var nav: NavigationAgent3D = $NavigationAgent3D
 @onready var bars: Sprite3D = $Bars
 @onready var hp_bar: ProgressBar = $Bars/SubViewport/HPBar
@@ -33,7 +32,7 @@ func _ready() -> void:
 	
 func _physics_process(delta: float) -> void:
 	if has_target:
-		if global_position.distance_squared_to(target.global_position) <= 20 * 20:
+		if global_position.distance_squared_to(target.global_position) <= 400:
 			attack_sequence(target, delta)
 		nav.target_position =  targets[0].global_position
 		var next_path_pos := nav.get_next_path_position()
