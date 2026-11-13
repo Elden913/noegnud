@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dcj7jdswaw5ob"]
 
-[ext_resource type="Script" uid="uid://tc7wybftlmp8" path="res://scripts/testgeneration.gd" id="1_qdj1e"]
+[ext_resource type="Script" uid="uid://tc7wybftlmp8" path="res://scripts/DungeonGeneration.gd" id="1_qdj1e"]
 [ext_resource type="PackedScene" uid="uid://73hl8j78uxe5" path="res://scenes/Rooms/BossRoom/Boss.tscn" id="2_ulyvk"]
 [ext_resource type="PackedScene" uid="uid://cuif807vbjriq" path="res://scenes/Rooms/corridor_1.tscn" id="3_f2acl"]
 [ext_resource type="PackedScene" uid="uid://bp85tv2hnd1fn" path="res://scenes/Rooms/DeadEnd/DeadEnd.tscn" id="4_llh1o"]

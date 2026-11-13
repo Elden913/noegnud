@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://c073dbwuf61fb"]
 
-[ext_resource type="PackedScene" uid="uid://v3uoi5xv4jhe" path="res://scenes/AI/basicmeleeai.tscn" id="1_3a0kg"]
-[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://scenes/player.tscn" id="2_4i8o7"]
+[ext_resource type="PackedScene" uid="uid://v3uoi5xv4jhe" path="res://scenes/AI/basicmeleeai.tscn" id="1_fs8uu"]
+[ext_resource type="Script" uid="uid://6wgqm6vsky0k" path="res://scenes/enemytest.gd" id="1_vcxfv"]
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://scenes/player.tscn" id="2_vcxfv"]
+[ext_resource type="PackedScene" uid="uid://r2k4xyjptcjh" path="res://enemy_spawn.tscn" id="3_00277"]
+[ext_resource type="PackedScene" uid="uid://wi5v5rjlccgu" path="res://scenes/AI/supportai.tscn" id="5_njyyx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3a0kg"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -23,6 +26,7 @@ cell_height = 0.1
 border_size = 1.0
 
 [node name="enemytest" type="Node3D" unique_id=137018909]
+script = ExtResource("1_vcxfv")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1625030798]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
@@ -48,10 +52,12 @@ size = Vector3(17.066528, 26.897339, 23.331543)
 transform = Transform3D(0.9048285, 0.3466756, 0.24718706, -0.38308224, 0.9162412, 0.1172607, -0.18583155, -0.20079382, 0.9618464, 26.944296, 9.492801, -8.083007)
 size = Vector3(14.6953125, 10, 35.049805)
 
-[node name="melee_enemy_test1" parent="." unique_id=798760047 instance=ExtResource("1_3a0kg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6595879, 0)
-SPEED = 4.0
-cooldown_max = 7.0
-
-[node name="Player" parent="." unique_id=168906038 instance=ExtResource("2_4i8o7")]
+[node name="Player" parent="." unique_id=168906038 instance=ExtResource("2_vcxfv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.3677006, -48.10457)
+
+[node name="EnemySpawn" parent="." unique_id=23795580 instance=ExtResource("3_00277")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -1.6262317, 0.55000305, -2.0381422)
+normal_enemies = Dictionary[int, PackedScene]({
+5: ExtResource("1_fs8uu")
+})
+support_enemies = Array[PackedScene]([ExtResource("5_njyyx")])

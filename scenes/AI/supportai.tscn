@@ -1,0 +1,120 @@
+[gd_scene format=3 uid="uid://wi5v5rjlccgu"]
+
+[ext_resource type="Script" uid="uid://bfqgebtmvhjlq" path="res://scenes/AI/basicsupportai.gd" id="1_6ew1p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_28m0y"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vygy0"]
+albedo_color = Color(0, 0.6422357, 0.30513132, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_28m0y"]
+material = SubResource("StandardMaterial3D_vygy0")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwe26"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ohbbn"]
+material = SubResource("StandardMaterial3D_fwe26")
+size = Vector3(0.5, 0.5, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_28m0y"]
+radius = 10.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ohbbn"]
+viewport_path = NodePath("Bars/SubViewport")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_s2gpv"]
+light_mode = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_elmjn"]
+bg_color = Color(0, 0, 0, 0.19607843)
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2gpv"]
+bg_color = Color(0.93161386, 0.40634307, 0.44073728, 1)
+
+[sub_resource type="Theme" id="Theme_28m0y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ohbbn"]
+bg_color = Color(0, 0, 0, 0.15686275)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fwe26"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="basicsupportai" type="CharacterBody3D" unique_id=798760047]
+collision_layer = 5
+script = ExtResource("1_6ew1p")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=475825548]
+avoidance_enabled = true
+radius = 1.0
+debug_enabled = true
+debug_use_custom = true
+debug_path_custom_color = Color(0, 1, 1, 1)
+
+[node name="HitBox" type="CollisionShape3D" parent="." unique_id=194165101]
+shape = SubResource("BoxShape3D_28m0y")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=550464967]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.371139e-09, 0, 0)
+mesh = SubResource("BoxMesh_28m0y")
+
+[node name="front" type="MeshInstance3D" parent="Mesh" unique_id=2064277914]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
+mesh = SubResource("BoxMesh_ohbbn")
+
+[node name="DetectionZone" type="Area3D" parent="." unique_id=1410973564]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionZone" unique_id=829716784]
+shape = SubResource("SphereShape3D_28m0y")
+
+[node name="Bars" type="Sprite3D" parent="." unique_id=438980392]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8114545, 0)
+cast_shadow = 0
+pixel_size = 0.004
+billboard = 1
+texture = SubResource("ViewportTexture_ohbbn")
+
+[node name="SubViewport" type="SubViewport" parent="Bars" unique_id=571085038]
+transparent_bg = true
+size = Vector2i(309, 40)
+size_2d_override_stretch = true
+
+[node name="HPBar" type="ProgressBar" parent="Bars/SubViewport" unique_id=1001953208]
+material = SubResource("CanvasItemMaterial_s2gpv")
+offset_left = -1.0
+offset_right = 299.0
+offset_bottom = 20.0
+theme_override_styles/background = SubResource("StyleBoxFlat_elmjn")
+theme_override_styles/fill = SubResource("StyleBoxFlat_s2gpv")
+value = 50.0
+show_percentage = false
+
+[node name="ShieldBar" type="ProgressBar" parent="Bars/SubViewport" unique_id=1481932261]
+material = SubResource("CanvasItemMaterial_s2gpv")
+offset_top = 26.0
+offset_right = 300.0
+offset_bottom = 33.0
+theme = SubResource("Theme_28m0y")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_ohbbn")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fwe26")
+value = 50.0
+show_percentage = false
+
+[node name="Misc" type="Node" parent="." unique_id=268665681]
+
+[node name="BrokenShieldTimer" type="Timer" parent="Misc" unique_id=191279435]
+one_shot = true
+
+[node name="FreezeTimer" type="Timer" parent="Misc" unique_id=695085775]
+one_shot = true
+
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
+[connection signal="body_entered" from="DetectionZone" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="Misc/BrokenShieldTimer" to="." method="_on_broken_shield_timer_timeout"]
+[connection signal="timeout" from="Misc/FreezeTimer" to="." method="_on_freeze_timer_timeout"]

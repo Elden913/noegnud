@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bjy1w6tf6rw0s"]
 
-[ext_resource type="Script" uid="uid://cuo6j365a3j4i" path="res://enemyattack.gd" id="1_wg6he"]
+[ext_resource type="Script" uid="uid://cuo6j365a3j4i" path="res://scenes/AI/Attacks/enemyattack.gd" id="1_whxl5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_28m0y"]
 size = Vector3(10, 1, 10)
@@ -15,9 +15,10 @@ size = Vector3(10, 1, 10)
 
 [node name="aiatk1" type="CSGBox3D" unique_id=1031454439]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
-script = ExtResource("1_wg6he")
+script = ExtResource("1_whxl5")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1007130730]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
 collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=783357025]
