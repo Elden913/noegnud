@@ -1,11 +1,17 @@
 [gd_scene format=3 uid="uid://v3uoi5xv4jhe"]
 
 [ext_resource type="Script" uid="uid://dcortfipcy1yr" path="res://scripts/basicmeleeai.gd" id="1_0p5vc"]
-[ext_resource type="PackedScene" uid="uid://bjy1w6tf6rw0s" path="res://aiatk1.tscn" id="2_tm36g"]
+[ext_resource type="PackedScene" uid="uid://bjy1w6tf6rw0s" path="res://scenes/AI/Attacks/aiatk1.tscn" id="2_tm36g"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_28m0y"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_28m0y"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwe26"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ohbbn"]
+material = SubResource("StandardMaterial3D_fwe26")
+size = Vector3(0.5, 0.5, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_28m0y"]
 radius = 10.0
@@ -35,12 +41,6 @@ bg_color = Color(0, 0, 0, 0.15686275)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fwe26"]
 bg_color = Color(1, 1, 1, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwe26"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_ohbbn"]
-material = SubResource("StandardMaterial3D_fwe26")
-size = Vector3(0.5, 0.5, 1)
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_fwe26"]
 size = Vector3(10, 5, 20)
 
@@ -51,15 +51,21 @@ attacks = Array[PackedScene]([ExtResource("2_tm36g")])
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=475825548]
 avoidance_enabled = true
+radius = 1.0
 debug_enabled = true
+debug_use_custom = true
 debug_path_custom_color = Color(0, 1, 1, 1)
 
 [node name="HitBox" type="CollisionShape3D" parent="." unique_id=194165101]
 shape = SubResource("BoxShape3D_28m0y")
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=550464967]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -4.371139e-09, 0, -0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.371139e-09, 0, 0)
 mesh = SubResource("BoxMesh_28m0y")
+
+[node name="front" type="MeshInstance3D" parent="Mesh" unique_id=2064277914]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
+mesh = SubResource("BoxMesh_ohbbn")
 
 [node name="DetectionZone" type="Area3D" parent="." unique_id=1410973564]
 collision_mask = 2
@@ -106,17 +112,19 @@ show_percentage = false
 [node name="BrokenShieldTimer" type="Timer" parent="Misc" unique_id=191279435]
 one_shot = true
 
-[node name="front" type="MeshInstance3D" parent="." unique_id=2064277914]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4.371139e-09, 0, 0)
-mesh = SubResource("BoxMesh_ohbbn")
+[node name="FreezeTimer" type="Timer" parent="Misc" unique_id=695085775]
+one_shot = true
 
 [node name="FrontDetection" type="Area3D" parent="." unique_id=816411016]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, -0.1)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FrontDetection" unique_id=72054793]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.5)
 shape = SubResource("BoxShape3D_fwe26")
 
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_area_3d_body_entered"]
 [connection signal="timeout" from="Misc/BrokenShieldTimer" to="." method="_on_broken_shield_timer_timeout"]
+[connection signal="timeout" from="Misc/FreezeTimer" to="." method="_on_freeze_timer_timeout"]
 [connection signal="body_entered" from="FrontDetection" to="." method="_on_front_detection_body_entered"]
 [connection signal="body_exited" from="FrontDetection" to="." method="_on_front_detection_body_exited"]
