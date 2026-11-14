@@ -12,7 +12,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	scale = Vector3.ONE * size_curve.sample(progress)
 	box.material.albedo_color = color_gradient.sample(progress)
 

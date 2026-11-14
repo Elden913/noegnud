@@ -1,29 +1,64 @@
-[gd_scene format=3 uid="uid://dx1f60qp3y0vx"]
+[gd_scene format=3 uid="uid://tr4uluq1elyc"]
 
 [ext_resource type="Script" uid="uid://boho6qdh7w2r" path="res://scenes/Rooms/roomscript.gd" id="1_rtcsv"]
+[ext_resource type="PackedScene" uid="uid://r2k4xyjptcjh" path="res://scenes/AI/enemy_spawn.tscn" id="2_c7g8h"]
+[ext_resource type="PackedScene" uid="uid://v3uoi5xv4jhe" path="res://scenes/AI/basicmeleeai.tscn" id="3_k8wj4"]
+[ext_resource type="PackedScene" uid="uid://wi5v5rjlccgu" path="res://scenes/AI/supportai.tscn" id="3_nqbcp"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_28m0y"]
+[sub_resource type="BoxMesh" id="BoxMesh_12lm3"]
 
-[node name="Room3" type="CSGBox3D" unique_id=1181995461]
-use_collision = true
-collision_layer = 9
-size = Vector3(30, 0.1, 30)
+[sub_resource type="NavigationMesh" id="NavigationMesh_28m0y"]
+vertices = PackedVector3Array(-8.250002, 0.66593957, -7.5, -6.500002, 1.1659396, -7.5, -6.500002, 1.1659396, -10.75, -8.250002, 0.66593957, -10.75, -14.500002, 0.41593957, -7, -14.500002, 0.41593957, -14.5, -8.250002, 0.41593957, -11.75, -4.000002, 0.41593957, -11.75, -3.750002, 0.41593957, -14.5, -8.250002, 0.66593957, -7, 5.999998, 5.4159393, -11.5, 5.999998, 5.4159393, -14.5, -14.500002, 5.4159393, -14.5, -14.500002, 5.4159393, -11.5, -2.250002, 0.41593957, -11.5, 14.499998, 0.41593957, -14.5, -8.250002, 0.41593957, -6.5, -14.500002, 0.41593957, 14.5, -2.250002, 0.41593957, -6.75, 14.499998, 0.41593957, 14.5, 7.999998, 5.4159393, -11.5, 14.499998, 5.4159393, -14.5, 8.249998, 5.4159393, -10.75, 8.499998, 5.1659393, -7.5, 14.499998, 5.4159393, -7.75, 7.999998, 5.1659393, -10.25, 2.999998, 3.6659396, -10.25, 2.749998, 3.6659396, -10.75)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(0, 4, 3), PackedInt32Array(3, 4, 5), PackedInt32Array(7, 6, 8), PackedInt32Array(8, 6, 5), PackedInt32Array(0, 9, 4), PackedInt32Array(5, 6, 3), PackedInt32Array(13, 12, 10), PackedInt32Array(10, 12, 11), PackedInt32Array(7, 8, 14), PackedInt32Array(14, 8, 15), PackedInt32Array(9, 16, 4), PackedInt32Array(4, 16, 17), PackedInt32Array(17, 16, 18), PackedInt32Array(18, 14, 15), PackedInt32Array(15, 19, 18), PackedInt32Array(18, 19, 17), PackedInt32Array(10, 11, 20), PackedInt32Array(20, 11, 21), PackedInt32Array(24, 23, 22), PackedInt32Array(22, 20, 24), PackedInt32Array(24, 20, 21), PackedInt32Array(25, 22, 23), PackedInt32Array(26, 25, 23), PackedInt32Array(2, 27, 26), PackedInt32Array(2, 26, 1), PackedInt32Array(1, 26, 23)]
+
+[node name="room_3" type="Node3D" unique_id=641258281]
 script = ExtResource("1_rtcsv")
 
-[node name="Doors" type="Node3D" parent="." unique_id=2114851096]
+[node name="Doors" type="Node3D" parent="." unique_id=600260738]
+transform = Transform3D(1, 0, -7.1054274e-15, 0, 1, 0, 7.1054274e-15, 0, 1, 0, 0, 0)
 
-[node name="0" type="MeshInstance3D" parent="Doors" unique_id=343279374]
+[node name="0" type="MeshInstance3D" parent="Doors" unique_id=826914204]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0)
-mesh = SubResource("BoxMesh_28m0y")
+mesh = SubResource("BoxMesh_12lm3")
 
-[node name="2" type="MeshInstance3D" parent="Doors" unique_id=1877429751]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, -15)
-mesh = SubResource("BoxMesh_28m0y")
+[node name="2" type="MeshInstance3D" parent="Doors" unique_id=146442737]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -15)
+mesh = SubResource("BoxMesh_12lm3")
 
-[node name="1" type="MeshInstance3D" parent="Doors" unique_id=1816570685]
+[node name="1" type="MeshInstance3D" parent="Doors" unique_id=34579912]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0)
-mesh = SubResource("BoxMesh_28m0y")
+mesh = SubResource("BoxMesh_12lm3")
 
-[node name="Centre" type="Node3D" parent="." unique_id=541457423]
+[node name="Centre" type="Node3D" parent="." unique_id=1393571104]
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Centre" unique_id=1597198276]
+[node name="CSGBox3D" type="CSGBox3D" parent="Centre" unique_id=1606920164]
+
+[node name="EnemySpawn" parent="." unique_id=23795580 instance=ExtResource("2_c7g8h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.023453474, 0.54999995, 0.06085062)
+normal_enemies = Dictionary[int, PackedScene]({
+5: ExtResource("3_k8wj4")
+})
+support_enemies = Array[PackedScene]([ExtResource("3_nqbcp")])
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1792661547]
+transform = Transform3D(1, 0, -7.1054274e-15, 0, 1, 0, 7.1054274e-15, 0, 1, 0, 0, 0)
+navigation_mesh = SubResource("NavigationMesh_28m0y")
+
+[node name="Mesh" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1012774962]
+use_collision = true
+size = Vector3(30, 0.1, 30)
+
+[node name="Mesh2" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1818911800]
+transform = Transform3D(0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 0, 1, -0.008370064, 2.4836497, -9.2258625)
+use_collision = true
+size = Vector3(19.468536, 0.1, 4)
+
+[node name="Mesh3" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1425788015]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1, 0, 5, -13)
+use_collision = true
+size = Vector3(30, 0.1, 4)
+
+[node name="Mesh4" type="CSGBox3D" parent="NavigationRegion3D" unique_id=836080333]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1, 12.188845, 5, -11.157959)
+use_collision = true
+size = Vector3(5.6223145, 0.1, 7.684082)

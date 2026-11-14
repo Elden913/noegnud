@@ -10,6 +10,8 @@ var current_shield_val:float
 @export var cooldown_min:float = 3.0
 @export var cooldown_max:float = 6.0
 @export var attacks:Array[PackedScene] = []
+@export var atkrad:float = 10
+
 @onready var nav: NavigationAgent3D = $NavigationAgent3D
 @onready var bars: Sprite3D = $Bars
 @onready var hp_bar: ProgressBar = $Bars/SubViewport/HPBar
@@ -40,7 +42,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if is_alive:
 		if has_target and can_move:
-			if global_position.distance_squared_to(target.global_position) <= 400:
+			if global_position.distance_squared_to(target.global_position) <= atkrad*atkrad:
 				attack_sequence(delta)
 			nav.target_position =  targets[0].global_position
 			var next_path_pos := nav.get_next_path_position()
@@ -59,7 +61,7 @@ func _physics_process(delta: float) -> void:
 				
 			var rotation_speed:float = 4.0
 			var target_rotation := dir.signed_angle_to(Vector3.MODEL_FRONT, Vector3.DOWN)
-			rotation.y = rotate_toward(rotation.y, target_rotation, delta * rotation_speed)
+			global_rotation.y = rotate_toward(global_rotation.y, target_rotation, delta * rotation_speed)
 		move_and_slide()
 
 func attack_sequence(delta:float)->void:

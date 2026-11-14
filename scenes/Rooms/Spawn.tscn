@@ -1,17 +1,34 @@
-[gd_scene format=3 uid="uid://c3to43rj1j2bw"]
+[gd_scene format=3 uid="uid://dvajlwfvkpn8s"]
 
-[node name="SpawnChamber" type="CSGBox3D" unique_id=255829721]
-use_collision = true
-size = Vector3(20, 0.1, 20)
+[sub_resource type="NavigationMesh" id="NavigationMesh_28m0y"]
+vertices = PackedVector3Array(-9.5, 0.45, -9.5, -9.5, 0.45, 9.5, 9.5, 0.45, 9.5, 9.5, 0.45, -9.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 
-[node name="Doors" type="Node3D" parent="." unique_id=1334196401]
+[node name="spawn" type="Node3D" unique_id=997045763]
 
-[node name="0" type="CSGBox3D" parent="Doors" unique_id=859012327]
+[node name="Doors" type="Node3D" parent="." unique_id=958680824]
+
+[node name="0" type="CSGBox3D" parent="Doors" unique_id=817291490]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
 
-[node name="1" type="CSGBox3D" parent="Doors" unique_id=690353816]
+[node name="NavigationLink3D" type="NavigationLink3D" parent="Doors/0" unique_id=1697559200]
+start_position = Vector3(1, 0, 0)
+end_position = Vector3(-1, 0, 0)
+
+[node name="1" type="CSGBox3D" parent="Doors" unique_id=528185640]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 
-[node name="Centre" type="Node3D" parent="." unique_id=959195074]
+[node name="NavigationLink3D" type="NavigationLink3D" parent="Doors/1" unique_id=2114550127]
+start_position = Vector3(0, 0, 1)
+end_position = Vector3(0, 0, -1)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Centre" unique_id=1063698722]
+[node name="Centre" type="Node3D" parent="." unique_id=481579572]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Centre" unique_id=2127390217]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=488528563]
+navigation_mesh = SubResource("NavigationMesh_28m0y")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1266702920]
+use_collision = true
+size = Vector3(20, 0.1, 20)
