@@ -5,7 +5,7 @@ extends Node3D
 @export_group("Dungeon Generation")
 @export var RoomCount: int = 5
 ## Hall length range (even values are tried). Widen this if rooms fail to fit.
-@export var corridor_length_min: int = 20
+@export var corridor_length_min: int = 10
 @export var corridor_length_max: int = 60
 ## Bounding boxes are shrunk by this before overlap tests so pieces that touch at a door don't collide.
 @export var overlap_margin: float = 0.1
@@ -49,6 +49,7 @@ func total_rooms() -> int:
 
 func _ready() -> void:
 	load_dungeon()
+	bake_navs()
 
 func load_dungeon() -> void:
 	if not data or not data.Spawn or not data.BossChamber:
@@ -386,9 +387,11 @@ func search_fit(door: Node3D, dir: Vector3, source_room: Node3D, corridor_scenes
 	for corridor_scene in corridor_scenes:
 		var is_hall: bool = corridor_scene == data.Corridors.get("hall")
 
-		var lengths: Array = [0]
+		var lengths: Array = []
 		if is_hall:
-			lengths = range(corridor_length_min, corridor_length_max + 1, 2)
+			var min_len := mini(corridor_length_min, corridor_length_max)
+			var max_len := maxi(corridor_length_min, corridor_length_max)
+			lengths = range(min_len, max_len + 1, 2)
 			lengths.shuffle()
 
 		var corridor: Node3D = corridor_scene.instantiate()
@@ -410,17 +413,27 @@ func search_fit(door: Node3D, dir: Vector3, source_room: Node3D, corridor_scenes
 			unregister_piece(corridor)
 
 		discard_piece(corridor)
-
 	return null
 
+var navs:Array =[]
+
+func bake_navs():
+	for i in navs:
+		await get_tree().process_frame
+		i.bake_navigation_mesh(true)
+		await i.bake_finished
+		print("baked ", i)
+	pass
+
 func apply_hall_length(corridor: Node3D, length: float) -> void:
-	var box := corridor as CSGBox3D
+	var box := corridor as Node3D
 	if not box:
 		return
-	box.size.z = length
+	box.get_node("NavigationRegion3D/Mesh").size.z = length
+	navs.append(box.get_node("NavigationRegion3D"))
 	var doorlocmod := -1
 	for c_door in corridor.get_node("Doors").get_children():
-		c_door.position.z = -1 * doorlocmod * (box.size.z / 2.0)
+		c_door.position.z = -1 * doorlocmod * (box.get_node("NavigationRegion3D/Mesh").size.z / 2.0)
 		doorlocmod *= -1
 
 ## Aligns a piece to a door. Rejects it if it overlaps something, or (optionally) if its centre isn't on the corridor's axis.

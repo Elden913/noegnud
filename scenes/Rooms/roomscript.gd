@@ -1,4 +1,4 @@
-extends CSGBox3D
+extends Node3D
 var loot:float = 0.0
 var difficulty:float = 0.0
 
@@ -7,8 +7,3 @@ func _ready() -> void:
 	await get_tree().process_frame
 	#print(self, " loot, diff: ", loot, " ", difficulty)
 	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass

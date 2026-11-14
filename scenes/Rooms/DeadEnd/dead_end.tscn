@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://nqcvf6ggotys"]
+
+[ext_resource type="PackedScene" uid="uid://r2k4xyjptcjh" path="res://scenes/AI/enemy_spawn.tscn" id="1_tv1ml"]
+[ext_resource type="PackedScene" uid="uid://v3uoi5xv4jhe" path="res://scenes/AI/basicmeleeai.tscn" id="2_tu5er"]
+[ext_resource type="PackedScene" uid="uid://wi5v5rjlccgu" path="res://scenes/AI/supportai.tscn" id="3_e86yy"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_28m0y"]
+vertices = PackedVector3Array(-9.5, 0.45, -9.5, -9.5, 0.45, 9.5, 9.5, 0.45, 9.5, 9.5, 0.45, -9.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+
+[node name="dead_end" type="Node3D" unique_id=449748014]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1668124771]
+navigation_mesh = SubResource("NavigationMesh_28m0y")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D" unique_id=111474288]
+use_collision = true
+size = Vector3(20, 0.1, 20)
+
+[node name="Doors" type="Node3D" parent="." unique_id=429106485]
+
+[node name="0" type="CSGBox3D" parent="Doors" unique_id=1442836941]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+
+[node name="NavigationLink3D" type="NavigationLink3D" parent="Doors/0" unique_id=1810601659]
+start_position = Vector3(-1, 0, 0)
+end_position = Vector3(1, 0, 0)
+
+[node name="Centre" type="Node3D" parent="." unique_id=1979089929]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Centre" unique_id=2107448246]
+
+[node name="EnemySpawn" parent="." unique_id=23795580 instance=ExtResource("1_tv1ml")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.002886176, 0.54999983, 0.012855768)
+normal_enemies = Dictionary[int, PackedScene]({
+5: ExtResource("2_tu5er")
+})
+support_enemies = Array[PackedScene]([ExtResource("3_e86yy")])

@@ -21,9 +21,6 @@ func _ready() -> void:
 		support_enemies_present = roundi(difficulty/10)
 	allocate_budget()
 
-func _process(delta: float) -> void:
-	pass
-
 func allocate_budget():
 	if support_enemies_present > 0 and !support_enemies.is_empty():
 		for i in support_enemies_present:

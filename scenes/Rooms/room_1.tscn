@@ -1,25 +1,48 @@
-[gd_scene format=3 uid="uid://lobj1djvdwht"]
+[gd_scene format=3 uid="uid://lhwneeftc0d4"]
 
 [ext_resource type="Script" uid="uid://boho6qdh7w2r" path="res://scenes/Rooms/roomscript.gd" id="1_vwslg"]
+[ext_resource type="PackedScene" uid="uid://r2k4xyjptcjh" path="res://scenes/AI/enemy_spawn.tscn" id="2_0tgwl"]
+[ext_resource type="PackedScene" uid="uid://wi5v5rjlccgu" path="res://scenes/AI/supportai.tscn" id="3_aciaf"]
+[ext_resource type="PackedScene" uid="uid://v3uoi5xv4jhe" path="res://scenes/AI/basicmeleeai.tscn" id="3_cf6fw"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_28m0y"]
+[sub_resource type="BoxMesh" id="BoxMesh_is5ow"]
 
-[node name="Room1" type="CSGBox3D" unique_id=1181995461]
-use_collision = true
-collision_layer = 9
-size = Vector3(30, 0.1, 30)
+[sub_resource type="NavigationMesh" id="NavigationMesh_28m0y"]
+vertices = PackedVector3Array(-14.5, 0.45, -14.5, -14.5, 0.45, 14.5, 14.5, 0.45, 14.5, 14.5, 0.45, -14.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xgo8u"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="room_1" type="Node3D" unique_id=661915749]
 script = ExtResource("1_vwslg")
 
-[node name="Doors" type="Node3D" parent="." unique_id=2114851096]
+[node name="Doors" type="Node3D" parent="." unique_id=1526821387]
 
-[node name="0" type="MeshInstance3D" parent="Doors" unique_id=343279374]
+[node name="0" type="MeshInstance3D" parent="Doors" unique_id=729987180]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0)
-mesh = SubResource("BoxMesh_28m0y")
+mesh = SubResource("BoxMesh_is5ow")
 
-[node name="1" type="MeshInstance3D" parent="Doors" unique_id=1816570685]
+[node name="1" type="MeshInstance3D" parent="Doors" unique_id=1995752978]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0)
-mesh = SubResource("BoxMesh_28m0y")
+mesh = SubResource("BoxMesh_is5ow")
 
-[node name="Centre" type="Node3D" parent="." unique_id=541457423]
+[node name="Centre" type="Node3D" parent="." unique_id=118592272]
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Centre" unique_id=1597198276]
+[node name="CSGBox3D" type="CSGBox3D" parent="Centre" unique_id=645855014]
+
+[node name="EnemySpawn" parent="." unique_id=23795580 instance=ExtResource("2_0tgwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.012001514, 0.54999924, 0.0064764023)
+normal_enemies = Dictionary[int, PackedScene]({
+5: ExtResource("3_cf6fw")
+})
+support_enemies = Array[PackedScene]([ExtResource("3_aciaf")])
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1398750037]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+navigation_mesh = SubResource("NavigationMesh_28m0y")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D" unique_id=581619660]
+use_collision = true
+size = Vector3(30, 0.1, 30)
+material = SubResource("StandardMaterial3D_xgo8u")

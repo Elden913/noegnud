@@ -1,40 +1,67 @@
-[gd_scene format=3 uid="uid://cuif807vbjriq"]
+[gd_scene format=3 uid="uid://7ynm0iqloqnl"]
 
-[ext_resource type="Script" uid="uid://l23l7cpthllp" path="res://scripts/wallcode.gd" id="1_gl57o"]
+[ext_resource type="Script" uid="uid://b4jw405pttpo5" path="res://scripts/walls.gd" id="1_3mh35"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_ohbbn"]
+[sub_resource type="BoxMesh" id="BoxMesh_krh7f"]
 
-[node name="corridor1" type="CSGBox3D" unique_id=963782778]
+[sub_resource type="NavigationMesh" id="NavigationMesh_fhvhr"]
+resource_local_to_scene = true
+
+[sub_resource type="GDScript" id="GDScript_7m8ay"]
+script/source = "extends NavigationRegion3D
+var on_thread:bool = true
+
+func bake_nav():
+	await  get_tree().process_frame
+	await  get_tree().process_frame
+	self.bake_navigation_mesh(on_thread)
+	await self.bake_finished
+	print(\"Navmesh updated!\")
+"
+
+[node name="corridor_1" type="Node3D" unique_id=2093434042]
+
+[node name="Doors" type="Node3D" parent="." unique_id=896463646]
+
+[node name="0" type="MeshInstance3D" parent="Doors" unique_id=73469397]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+mesh = SubResource("BoxMesh_krh7f")
+
+[node name="NavigationLink3D" type="NavigationLink3D" parent="Doors/0" unique_id=1080354240]
+start_position = Vector3(0, 0, -1)
+end_position = Vector3(0, 0, 1)
+
+[node name="1" type="MeshInstance3D" parent="Doors" unique_id=1472290946]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+mesh = SubResource("BoxMesh_krh7f")
+
+[node name="NavigationLink3D" type="NavigationLink3D" parent="Doors/1" unique_id=1539573997]
+start_position = Vector3(0, 0, 1)
+end_position = Vector3(0, 0, -1)
+
+[node name="Centre" type="Node3D" parent="." unique_id=1995281587]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Centre" unique_id=734278682]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=383232786]
+navigation_mesh = SubResource("NavigationMesh_fhvhr")
+script = SubResource("GDScript_7m8ay")
+
+[node name="Mesh" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1786469773]
 use_collision = true
-collision_layer = 9
 size = Vector3(5, 0.1, 10)
 
-[node name="Doors" type="Node3D" parent="." unique_id=1336647828]
+[node name="Walls" type="Node3D" parent="." unique_id=281616255]
+script = ExtResource("1_3mh35")
 
-[node name="0" type="MeshInstance3D" parent="Doors" unique_id=1089326380]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
-mesh = SubResource("BoxMesh_ohbbn")
-
-[node name="1" type="MeshInstance3D" parent="Doors" unique_id=35521231]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
-mesh = SubResource("BoxMesh_ohbbn")
-
-[node name="Centre" type="Node3D" parent="." unique_id=873327735]
-
-[node name="CSGBox3D" type="CSGBox3D" parent="Centre" unique_id=582718425]
-
-[node name="Walls" type="Node3D" parent="." unique_id=192852390]
-
-[node name="CSGBox3D" type="CSGBox3D" parent="Walls" unique_id=1800271296]
+[node name="CSGBox3D" type="CSGBox3D" parent="Walls" unique_id=774839506]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.512207, 0)
 use_collision = true
 collision_layer = 9
 size = Vector3(0.1, 5, 10)
-script = ExtResource("1_gl57o")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="Walls" unique_id=1047713772]
+[node name="CSGBox3D2" type="CSGBox3D" parent="Walls" unique_id=456462576]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.5, 0)
 use_collision = true
 collision_layer = 9
 size = Vector3(0.1, 5, 10)
-script = ExtResource("1_gl57o")

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://wi5v5rjlccgu"]
 
-[ext_resource type="Script" uid="uid://bfqgebtmvhjlq" path="res://scenes/AI/basicsupportai.gd" id="1_6ew1p"]
+[ext_resource type="Script" uid="uid://bfqgebtmvhjlq" path="res://scripts/basicsupportai.gd" id="1_6ew1p"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_28m0y"]
 
