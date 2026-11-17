@@ -18,6 +18,8 @@ var current_shield_val:float
 @onready var shield_bar: ProgressBar = $Bars/SubViewport/ShieldBar
 @onready var broken_shield_timer: Timer = $Misc/BrokenShieldTimer
 @onready var freeze_timer: Timer = $Misc/FreezeTimer
+@onready var death_timer: Timer = $Misc/DeathTimer
+@onready var mesh: MeshInstance3D = $Mesh
 
 var spawn_pos:Vector3
 var has_target:bool = false
@@ -30,6 +32,8 @@ var player_in_front:Array = []
 var is_buffed:bool = false
 var is_healing:bool = false
 var can_move:bool = true
+
+
 
 func _ready() -> void:
 	current_shield_val = shield_val
@@ -63,6 +67,7 @@ func _physics_process(delta: float) -> void:
 			var target_rotation := dir.signed_angle_to(Vector3.MODEL_FRONT, Vector3.DOWN)
 			global_rotation.y = rotate_toward(global_rotation.y, target_rotation, delta * rotation_speed)
 		move_and_slide()
+	else: mesh.dissolve()
 
 func attack_sequence(delta:float)->void:
 	if timer <= 0:

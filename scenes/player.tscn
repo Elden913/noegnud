@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://rel828x7sps1" path="res://scripts/player.gd" id="1_ucva2"]
 [ext_resource type="Script" uid="uid://c4s52ps0trl0j" path="res://scripts/spell_resource.gd" id="2_qhqgy"]
 [ext_resource type="Resource" uid="uid://b55nfnbwp3cea" path="res://resources/spells/basic_attack/basic_attack.tres" id="3_qhqgy"]
+[ext_resource type="Script" uid="uid://bqyljmfo5luxx" path="res://scenes/world_position_handler.gd" id="4_dqkch"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qhqgy"]
 
@@ -53,4 +54,5 @@ spring_length = 5.0
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=754435816]
 replication_config = SubResource("SceneReplicationConfig_qhqgy")
 
-[node name="Misc" type="Node" parent="." unique_id=640163325]
+[node name="WorldPositionHandler" type="Node" parent="." unique_id=640163325]
+script = ExtResource("4_dqkch")

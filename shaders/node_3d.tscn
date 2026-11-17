@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dshwwmd5ivrvj"]
+
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://scenes/player.tscn" id="1_68py8"]
+
+[sub_resource type="MultiMesh" id="MultiMesh_28m0y"]
+transform_format = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_28m0y"]
+size = Vector2(25, 25)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_28m0y"]
+
+[node name="Node3D" type="Node3D" unique_id=267805376]
+
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="." unique_id=644077991]
+multimesh = SubResource("MultiMesh_28m0y")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=36320975]
+mesh = SubResource("PlaneMesh_28m0y")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D" unique_id=800956195]
+shape = SubResource("WorldBoundaryShape3D_28m0y")
+
+[node name="Player" parent="." unique_id=168906038 instance=ExtResource("1_68py8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05021286, 0, 0.014485836)

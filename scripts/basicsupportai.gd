@@ -6,3 +6,6 @@ func _ready() -> void:
 
 func take_damage(amt:float):
 	pass
+
+func damage_shield(amt:float):
+	pass
